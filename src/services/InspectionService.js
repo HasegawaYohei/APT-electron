@@ -56,13 +56,18 @@ export function generateAnswerButtonList(columnNumber) {
   if (columnNumber === 2) {
     return answerButtonList.map(answerButton => ({
       ...answerButton,
-      label: `${answerButton.label}${(answerButton.statusIndex % 2) ? 'R' : 'L'}`,
+      label: `${answerButton.label}${(answerButton.statusIndex % 2) ? ' - 右耳' : ' - 左耳'}`,
     }));
   }
   if (columnNumber === 3) {
+    const buttonLabelDic = [
+      ' - 語頭',
+      ' - 語中',
+      ' - 語尾',
+    ];
     return answerButtonList.map(answerButton => ({
       ...answerButton,
-      label: `${answerButton.label}${answerButton.statusIndex + 1}`,
+      label: `${answerButton.label}${buttonLabelDic[answerButton.statusIndex]}`,
     }));
   }
 
@@ -73,15 +78,15 @@ export function generateResultListHeader(columnNumber) {
   if (columnNumber === 1) return [{ id: 'status1', value: '状態' }];
   if (columnNumber === 2) {
     return [
-      { id: 'status1', value: '状態L' },
-      { id: 'status2', value: '状態R' },
+      { id: 'status1', value: '左耳' },
+      { id: 'status2', value: '右耳' },
     ];
   }
   if (columnNumber === 3) {
     return [
-      { id: 'status1', value: '状態1' },
-      { id: 'status2', value: '状態2' },
-      { id: 'status3', value: '状態3' },
+      { id: 'status1', value: '語頭' },
+      { id: 'status2', value: '語中' },
+      { id: 'status3', value: '語尾' },
     ];
   }
 

@@ -17,10 +17,10 @@
 
     <v-layout text-xs-center mt-3 wrap>
       <v-flex xs12>
-        1の後に「9」が出てきたら、スペースキーを押してください
+        <h2 class="display2">1の後に「9」が出てきたら、スペースキーを押してください</h2>
         <v-btn
           color="info"
-          class="btn-custom"
+          class="btn-medium"
           :large="true"
           :disabled="!ready || played"
           @click="play"
@@ -169,8 +169,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="stylus">
-.btn-custom
-  width 80%
-</style>

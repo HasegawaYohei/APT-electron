@@ -29,17 +29,17 @@ export default {
         path: 'singleEarSingleWord',
       },
       {
-        title: '単音節',
+        title: '両耳分離単音節',
         divider: true,
         path: 'singleSound',
       },
       {
-        title: '単語',
+        title: '両耳分離単語',
         divider: true,
         path: 'word',
       },
       {
-        title: '文',
+        title: '両耳分離文',
         divider: true,
         path: 'sentence',
       },
