@@ -140,6 +140,7 @@ function appendFile(path, data) {
 
 async function outputCsv(filepath, header, body, appendData) {
   const { createObjectCsvWriter } = remote.require('csv-writer');
+  const fs = remote.require('fs');
   const path = remote.require('path');
   const appPath = localStorage.getItem('appPath');
   const resolvedPath = path.resolve(appPath, '結果出力', filepath);
@@ -151,6 +152,8 @@ async function outputCsv(filepath, header, body, appendData) {
   });
 
   await csvWriter.writeRecords(body);
+  const csvStringFromFile = fs.readFileSync(resolvedPath, 'utf8');
+  fs.writeFileSync(resolvedPath, `\ufeff${csvStringFromFile}`);
 
   if (appendData) {
     appendFile(resolvedPath, appendData);
