@@ -53,8 +53,15 @@ export default {
 };
 </script>
 
-<style>
-.text-center{
-  text-align: center;
-}
+<style lang='stylus'>
+.text-center
+  text-align center
+
+.btn-medium
+  width 80%
+  height 88px
+
+.btn-large
+  width 90%
+  height 88px
 </style>
