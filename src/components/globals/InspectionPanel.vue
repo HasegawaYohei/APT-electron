@@ -20,7 +20,7 @@
         <v-flex xs3>
           <v-btn
             :large="true"
-            class="btn-custom"
+            class="btn-large"
             :disabled="played"
             @click="moveCursor('back')"
              >戻</v-btn>
@@ -29,14 +29,14 @@
           <v-btn
             color="info"
             :large="true"
-            class="btn-custom"
+            class="btn-large"
             @click="play"
              >再生</v-btn>
         </v-flex>
         <v-flex xs3>
           <v-btn
             :large="true"
-            class="btn-custom"
+            class="btn-large"
             :disabled="played"
             @click="moveCursor('next')"
              >次</v-btn>
@@ -47,7 +47,7 @@
             <v-btn
               :large="true"
               :color="answerButton.color"
-              class="btn-custom"
+              class="btn-large"
               :disabled="!played"
               @click="answer(answerButton.statusIndex, answerButton.answer)"
             >
@@ -181,8 +181,6 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-.btn-custom
-  width 90%
 .active
   background-color #BBDEFB
 .result-list

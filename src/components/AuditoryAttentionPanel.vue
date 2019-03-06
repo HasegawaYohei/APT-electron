@@ -20,7 +20,7 @@
         1の後に「9」が出てきたら、スペースキーを押してください
         <v-btn
           color="info"
-          class="btn-custom"
+          class="btn-medium"
           :large="true"
           :disabled="!ready || played"
           @click="play"
@@ -169,8 +169,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="stylus">
-.btn-custom
-  width 80%
-</style>

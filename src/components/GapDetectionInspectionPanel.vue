@@ -20,7 +20,7 @@
         <v-btn
           :large="true"
           color="info"
-          class="btn-custom"
+          class="btn-large"
           @click="play"
           >{{playStatus}}</v-btn>
       </v-flex>
@@ -30,7 +30,7 @@
       <v-flex xs12>
         <v-btn
           :large="true"
-          class="btn-custom"
+          class="btn-large"
           :disabled="!played"
           @click="answer(-1)"
           >不明 / 該当なし</v-btn>
@@ -41,7 +41,7 @@
       <v-flex xs3>
         <v-btn
           :large="true"
-          class="btn-custom"
+          class="btn-large"
           :class="{ active: activeNo[0] }"
           :disabled="!played"
           @click="answer(0)"
@@ -50,7 +50,7 @@
       <v-flex xs3>
         <v-btn
           :large="true"
-          class="btn-custom"
+          class="btn-large"
           :class="{ active: activeNo[1] }"
           :disabled="!played"
           @click="answer(1)"
@@ -59,7 +59,7 @@
       <v-flex xs3>
         <v-btn
           :large="true"
-          class="btn-custom"
+          class="btn-large"
           :class="{ active: activeNo[2] }"
           :disabled="!played"
           @click="answer(2)"
@@ -68,7 +68,7 @@
       <v-flex xs3>
         <v-btn
           :large="true"
-          class="btn-custom"
+          class="btn-large"
           :class="{ active: activeNo[3] }"
           :disabled="!played"
           @click="answer(3)"
@@ -283,8 +283,6 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-.btn-custom
-  width 90%
 .active
   border solid 2px #F50057 !important
 .latest-answer
