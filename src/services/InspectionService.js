@@ -56,13 +56,18 @@ export function generateAnswerButtonList(columnNumber) {
   if (columnNumber === 2) {
     return answerButtonList.map(answerButton => ({
       ...answerButton,
-      label: `${answerButton.label}${(answerButton.statusIndex % 2) ? 'R' : 'L'}`,
+      label: `${answerButton.label}${(answerButton.statusIndex % 2) ? ' - 右耳' : ' - 左耳'}`,
     }));
   }
   if (columnNumber === 3) {
+    const buttonLabelDic = [
+      ' - 語頭',
+      ' - 語中',
+      ' - 語尾',
+    ];
     return answerButtonList.map(answerButton => ({
       ...answerButton,
-      label: `${answerButton.label}${answerButton.statusIndex + 1}`,
+      label: `${answerButton.label}${buttonLabelDic[answerButton.statusIndex]}`,
     }));
   }
 
@@ -73,15 +78,15 @@ export function generateResultListHeader(columnNumber) {
   if (columnNumber === 1) return [{ id: 'status1', value: '状態' }];
   if (columnNumber === 2) {
     return [
-      { id: 'status1', value: '状態L' },
-      { id: 'status2', value: '状態R' },
+      { id: 'status1', value: '左耳' },
+      { id: 'status2', value: '右耳' },
     ];
   }
   if (columnNumber === 3) {
     return [
-      { id: 'status1', value: '状態1' },
-      { id: 'status2', value: '状態2' },
-      { id: 'status3', value: '状態3' },
+      { id: 'status1', value: '語頭' },
+      { id: 'status2', value: '語中' },
+      { id: 'status3', value: '語尾' },
     ];
   }
 
@@ -135,6 +140,7 @@ function appendFile(path, data) {
 
 async function outputCsv(filepath, header, body, appendData) {
   const { createObjectCsvWriter } = remote.require('csv-writer');
+  const fs = remote.require('fs');
   const path = remote.require('path');
   const appPath = localStorage.getItem('appPath');
   const resolvedPath = path.resolve(appPath, '結果出力', filepath);
@@ -146,6 +152,8 @@ async function outputCsv(filepath, header, body, appendData) {
   });
 
   await csvWriter.writeRecords(body);
+  const csvStringFromFile = fs.readFileSync(resolvedPath, 'utf8');
+  fs.writeFileSync(resolvedPath, `\ufeff${csvStringFromFile}`);
 
   if (appendData) {
     appendFile(resolvedPath, appendData);
@@ -178,14 +186,17 @@ export async function outputCsvForInspectionPanel(filename, csvHeader, bodyOrigi
 export async function outputCsvForGapInspection(filename, bodyOrigin) {
   const csvfilepath = `./${filename}.csv`;
   const header = [
+    { id: 'answerNumber', title: '回答数' },
+    { id: 'filename', title: 'ファイル名' },
+    { id: 'correctIndex', title: '乱数値' },
+    { id: 'selectedNumber', title: '選択値' },
     { id: 'result', title: '結果' },
   ];
+  const body = bodyOrigin.slice().reverse();
   const level = bodyOrigin.find(elem => elem.result === '正').audioIndex;
-  const body = [{
-    result: `Lv.${level} ${level * 2}ms`,
-  }];
+  const appendData = `最終結果,Lv.${level} ${level * 2}ms`;
 
-  await outputCsv(csvfilepath, header, body);
+  await outputCsv(csvfilepath, header, body, appendData);
 }
 
 export async function outputCsvForTheWordUnderNoiseInspection(filename, resultList, resultMapList) {

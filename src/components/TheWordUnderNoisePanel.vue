@@ -18,7 +18,7 @@
     <v-layout justify-center text-xs-center mt-2 wrap>
       <v-flex xs6>
         <v-btn
-          class="btn-custom"
+          class="btn-large"
           :large="true"
           :disabled="played"
           @click="reOrder"
@@ -30,7 +30,7 @@
         <v-btn
           color="error"
           :large="true"
-          class="btn-custom"
+          class="btn-large"
           :disabled="!played"
           @click="answer(false)"
             >誤答</v-btn>
@@ -38,7 +38,7 @@
       <v-flex xs6>
         <v-btn
           color="info"
-          class="btn-custom"
+          class="btn-large"
           :large="true"
           :disabled="!ready"
           @click="play"
@@ -48,7 +48,7 @@
         <v-btn
           color="success"
           :large="true"
-          class="btn-custom"
+          class="btn-large"
           :disabled="!played"
           @click="answer(true)"
             >正答</v-btn>
@@ -85,8 +85,9 @@
             <div
               :style="{
                 background: audio.label === '済'
-                  ? '#fff'
-                  : getRgb(remainingAudioNumber, audio.label),
+                  ? '#5b5b5b'
+                  : '#fff',
+                border: 'solid 1px #41afcb',
                 color: '#252525',
                 fontSize: '18px',
                 padding: '3px 0'
@@ -363,6 +364,4 @@ export default {
 <style scoped lang="stylus">
 .result-list
   height 300px
-.btn-custom
-  width 90%
 </style>
