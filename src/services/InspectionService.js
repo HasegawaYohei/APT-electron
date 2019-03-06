@@ -186,14 +186,17 @@ export async function outputCsvForInspectionPanel(filename, csvHeader, bodyOrigi
 export async function outputCsvForGapInspection(filename, bodyOrigin) {
   const csvfilepath = `./${filename}.csv`;
   const header = [
+    { id: 'answerNumber', title: '回答数' },
+    { id: 'filename', title: 'ファイル名' },
+    { id: 'correctIndex', title: '乱数値' },
+    { id: 'selectedNumber', title: '選択値' },
     { id: 'result', title: '結果' },
   ];
+  const body = bodyOrigin.slice().reverse();
   const level = bodyOrigin.find(elem => elem.result === '正').audioIndex;
-  const body = [{
-    result: `Lv.${level} ${level * 2}ms`,
-  }];
+  const appendData = `最終結果,Lv.${level} ${level * 2}ms`;
 
-  await outputCsv(csvfilepath, header, body);
+  await outputCsv(csvfilepath, header, body, appendData);
 }
 
 export async function outputCsvForTheWordUnderNoiseInspection(filename, resultList, resultMapList) {
