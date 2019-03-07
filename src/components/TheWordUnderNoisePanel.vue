@@ -218,8 +218,9 @@
 </template>
 
 <script>
-import { generateAudioList, playAudio, outputCsvForTheWordUnderNoiseInspection } from '../services/InspectionService';
 import { shuffleArray, flattenArray, splitArray } from '../services/ArrayService';
+import { generateAudioList, playAudio } from '../services/InspectionService';
+import { outputCsvForTheWordUnderNoiseInspection } from '../services/FileService';
 
 function buildAudioList(audioListOrigin) {
   return audioListOrigin.map(audio => ({
