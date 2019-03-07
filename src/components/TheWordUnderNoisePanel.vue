@@ -15,16 +15,6 @@
       </v-toolbar>
     </v-card>
 
-    <v-layout justify-center text-xs-center mt-2 wrap>
-      <v-flex xs6>
-        <v-btn
-          class="btn-large"
-          :large="true"
-          :disabled="played"
-          @click="reOrder"
-          >番号再生成</v-btn>
-      </v-flex>
-    </v-layout>
     <v-layout text-xs-center justify-center mt-2 wrap>
       <v-flex xs3>
         <v-btn
@@ -242,7 +232,7 @@ function buildAudioTable(audioList, remainingAudioNumber) {
   const numberArray = shuffleArray(Array.from({ length: remainingAudioNumber }).map((_, i) => i));
   const labeledAudioList = audioList.map(audio => ({
     audio,
-    label: audio.done ? '済' : numberArray.pop(),
+    label: numberArray.pop(),
   }));
 
   return splitArray(labeledAudioList, 6);
@@ -310,9 +300,6 @@ export default {
 
       this.currentAudio.label = '再';
       playAudio(this.currentAudio.audio.buffer);
-    },
-    reOrder() {
-      this.audioTable = buildAudioTable(this.audioList, this.remainingAudioNumber);
     },
     answer(isCorrect) {
       this.currentAudio.audio.done = true;

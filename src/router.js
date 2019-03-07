@@ -155,7 +155,7 @@ export default new Router({
       path: '/multiple-sound-listening-inspection',
       name: 'multipleSoundListeningInspection',
       props: {
-        title: '複数音声下聴取',
+        title: '複数音声下聴取検査',
         backPath: 'home',
         audioDirPath: '複数音声聴取/',
         columnNumber: 1,
