@@ -103,13 +103,22 @@ export async function outputCsvForAuditoryAttentionInspection(inspectionTitle, r
     { id: 'time', title: '応答時間[ms]' },
   ];
   const body = resultList;
+  const correctAnswerList = resultList.filter(result => result.result === '正');
+  const averageTimeOfCorrectAnswer = correctAnswerList
+    .map(result => result.time)
+    .reduce((prev, current) => prev + current) / correctAnswerList.length;
+  const wrongAnswerList = resultList.filter(result => result.result === '誤');
+  const averageTimeOfWrongAnswer = wrongAnswerList
+    .map(result => result.time)
+    .reduce((prev, current) => prev + current) / wrongAnswerList.length;
   const correctNumber = resultList.filter(_result => _result.result === '正').length;
   const wrongNumber = resultList.filter(_result => _result.result === '誤').length;
-  const appendData = ['正答数,誤答数,正答率(正答数 / 20)'].concat(Object.values({
-    correctNumber,
-    wrongNumber,
-    correctPercent: `${Math.round(correctNumber / 20 * 100)}%`,
-  }).join(',')).join('\n');
+  const appendData = [
+    '正答数,誤答数,正答率(正答数 / 20)',
+    `${correctNumber},${wrongNumber},${Math.round(correctNumber / 20 * 100)}%`,
+    '正答 応答時間平均,誤答 応答時間平均',
+    `${averageTimeOfCorrectAnswer},${averageTimeOfWrongAnswer}`,
+  ].join('\n');
 
   await outputCsv(inspectionTitle, header, body, appendData);
 }
