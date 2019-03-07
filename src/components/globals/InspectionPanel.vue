@@ -124,7 +124,6 @@ export default {
   props: [
     'title',
     'backPath',
-    'audioDirPath',
     'answerButtonList',
     'resultListHeader',
     'audioList',
