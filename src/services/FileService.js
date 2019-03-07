@@ -1,6 +1,10 @@
 /* eslint import/no-extraneous-dependencies: 0 */
 import { remote } from 'electron';
 
+function zeroPadding(num, length) {
+  return (Array(length).join('0') + num).slice(-length);
+}
+
 function appendFile(path, data) {
   const fs = remote.require('fs');
   fs.appendFile(path, data, (err) => {
@@ -8,30 +12,36 @@ function appendFile(path, data) {
   });
 }
 
-async function outputCsv(filepath, header, body, appendData) {
+async function outputCsv(inspectionTitle, header, body, appendData) {
   const { createObjectCsvWriter } = remote.require('csv-writer');
   const fs = remote.require('fs');
   const path = remote.require('path');
   const appPath = localStorage.getItem('appPath');
-  const resolvedPath = path.resolve(appPath, '結果出力', filepath);
+  const dirPath = path.resolve(appPath, `結果出力/${inspectionTitle}`);
+
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath);
+  }
+
+  const fileNumber = zeroPadding(fs.readdirSync(dirPath).length + 1, 2);
+  const filePath = `${dirPath}/${inspectionTitle}-${fileNumber}.csv`;
   const csvWriter = createObjectCsvWriter({
-    path: resolvedPath,
+    path: filePath,
     header,
     encoding: 'utf8',
     append: false,
   });
 
   await csvWriter.writeRecords(body);
-  const csvStringFromFile = fs.readFileSync(resolvedPath, 'utf8');
-  fs.writeFileSync(resolvedPath, `\ufeff${csvStringFromFile}`);
+  const csvStringFromFile = fs.readFileSync(filePath, 'utf8');
+  fs.writeFileSync(filePath, `\ufeff${csvStringFromFile}`);
 
   if (appendData) {
-    appendFile(resolvedPath, appendData);
+    appendFile(filePath, appendData);
   }
 }
 
-export async function outputCsvForInspectionPanel(filename, csvHeader, bodyOrigin) {
-  const csvfilepath = `./${filename}.csv`;
+export async function outputCsvForInspectionPanel(inspectionTitle, csvHeader, bodyOrigin) {
   const header = [{ id: 'filename', value: 'ファイル名' }].concat(csvHeader).map(elem => ({
     id: elem.id,
     title: elem.value,
@@ -50,11 +60,10 @@ export async function outputCsvForInspectionPanel(filename, csvHeader, bodyOrigi
     .filter(elem => elem.statuses.every(status => status === '正答')).length;
   const appendData = `正答率  ${Math.round(totalCurrectAnserNumber / totalInspectionNumber * 100)}%`;
 
-  await outputCsv(csvfilepath, header, body, appendData);
+  await outputCsv(inspectionTitle, header, body, appendData);
 }
 
-export async function outputCsvForGapInspection(filename, bodyOrigin) {
-  const csvfilepath = `./${filename}.csv`;
+export async function outputCsvForGapInspection(inspectionTitle, bodyOrigin) {
   const header = [
     { id: 'answerNumber', title: '回答数' },
     { id: 'filename', title: 'ファイル名' },
@@ -66,11 +75,11 @@ export async function outputCsvForGapInspection(filename, bodyOrigin) {
   const level = bodyOrigin.find(elem => elem.result === '正').audioIndex;
   const appendData = `最終結果,Lv.${level} ${level * 2}ms`;
 
-  await outputCsv(csvfilepath, header, body, appendData);
+  await outputCsv(inspectionTitle, header, body, appendData);
 }
 
-export async function outputCsvForTheWordUnderNoiseInspection(filename, resultList, resultMapList) {
-  const csvfilepath = `./${filename}.csv`;
+export async function
+outputCsvForTheWordUnderNoiseInspection(inspectionTitle, resultList, resultMapList) {
   const header = [
     { id: 'filename', title: 'ファイル名' },
     { id: 'result', title: '結果' },
@@ -85,11 +94,10 @@ export async function outputCsvForTheWordUnderNoiseInspection(filename, resultLi
   const appendData = ['S/N条件,正答数,誤答数,正答率']
     .concat(appendDataOrigin.map(resultMap => Object.values(resultMap).join(','))).join('\n');
 
-  await outputCsv(csvfilepath, header, body, `\n${appendData}`);
+  await outputCsv(inspectionTitle, header, body, `\n${appendData}`);
 }
 
-export async function outputCsvForAuditoryAttentionInspection(filename, resultList) {
-  const csvfilepath = `./${filename}.csv`;
+export async function outputCsvForAuditoryAttentionInspection(inspectionTitle, resultList) {
   const header = [
     { id: 'result', title: '正誤' },
     { id: 'time', title: '応答時間[ms]' },
@@ -103,5 +111,5 @@ export async function outputCsvForAuditoryAttentionInspection(filename, resultLi
     correctPercent: `${Math.round(correctNumber / 20 * 100)}%`,
   }).join(',')).join('\n');
 
-  await outputCsv(csvfilepath, header, body, appendData);
+  await outputCsv(inspectionTitle, header, body, appendData);
 }
