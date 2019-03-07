@@ -53,13 +53,22 @@ export async function outputCsvForInspectionPanel(inspectionTitle, csvHeader, bo
     });
     return row;
   });
+  const columnNumber = bodyOrigin[0].statuses.length;
 
   const totalInspectionNumber = bodyOrigin
     .filter(elem => elem.statuses.every(status => status !== '')).length;
-  const totalCurrectAnserNumber = bodyOrigin
-    .filter(elem => elem.statuses.every(status => status === '正答')).length;
-  const appendData = `正答率  ${Math.round(totalCurrectAnserNumber / totalInspectionNumber * 100)}%`;
+  const statusesList = bodyOrigin.map(elem => elem.statuses);
+  const correctNumberPerStatus = Array(columnNumber).fill(0);
 
+  statusesList.forEach((statuses) => {
+    statuses.forEach((status, index) => {
+      correctNumberPerStatus[index] += status === '正答' ? 1 : 0;
+    });
+  });
+
+  const correctAnserRatePerStatus = correctNumberPerStatus
+    .map(correctNumber => `${Math.round(correctNumber / totalInspectionNumber * 100)}%`);
+  const appendData = ['正答率'].concat(correctAnserRatePerStatus).join(',');
   await outputCsv(inspectionTitle, header, body, appendData);
 }
 
