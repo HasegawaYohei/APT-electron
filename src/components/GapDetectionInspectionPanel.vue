@@ -172,7 +172,8 @@
 <script>
 /* eslint no-await-in-loop: 0 */
 
-import { playAudio, outputCsvForGapInspection } from '../services/InspectionService';
+import { playAudio } from '../services/InspectionService';
+import { outputCsvForGapInspection } from '../services/FileService';
 
 function sleep(msec) {
   return new Promise(resolve => setTimeout(resolve, msec));

@@ -34,7 +34,8 @@
 /* eslint no-await-in-loop: 0 */
 
 import { shuffleArray, flattenArray } from '../services/ArrayService';
-import { generateAudioList, playAudio, outputCsvForAuditoryAttentionInspection } from '../services/InspectionService';
+import { generateAudioList, playAudio } from '../services/InspectionService';
+import { outputCsvForAuditoryAttentionInspection } from '../services/FileService';
 
 let start = 0;
 let play = false;

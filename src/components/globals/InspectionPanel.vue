@@ -117,14 +117,13 @@ import {
   internalNext,
   internalBack,
   playAudio,
-  outputCsvForInspectionPanel,
 } from '../../services/InspectionService';
+import { outputCsvForInspectionPanel } from '../../services/FileService';
 
 export default {
   props: [
     'title',
     'backPath',
-    'audioDirPath',
     'answerButtonList',
     'resultListHeader',
     'audioList',
