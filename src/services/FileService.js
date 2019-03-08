@@ -113,13 +113,17 @@ export async function outputCsvForAuditoryAttentionInspection(inspectionTitle, r
   ];
   const body = resultList;
   const correctAnswerList = resultList.filter(result => result.result === '正');
-  const averageTimeOfCorrectAnswer = correctAnswerList
-    .map(result => result.time)
-    .reduce((prev, current) => prev + current) / correctAnswerList.length;
+  const averageTimeOfCorrectAnswer = Math.round(
+    correctAnswerList
+      .map(result => result.time)
+      .reduce((prev, current) => prev + current) / correctAnswerList.length,
+  );
   const wrongAnswerList = resultList.filter(result => result.result === '誤');
-  const averageTimeOfWrongAnswer = wrongAnswerList
-    .map(result => result.time)
-    .reduce((prev, current) => prev + current) / wrongAnswerList.length;
+  const averageTimeOfWrongAnswer = Math.round(
+    wrongAnswerList
+      .map(result => result.time)
+      .reduce((prev, current) => prev + current) / wrongAnswerList.length,
+  );
   const correctNumber = resultList.filter(_result => _result.result === '正').length;
   const wrongNumber = resultList.filter(_result => _result.result === '誤').length;
   const appendData = [
