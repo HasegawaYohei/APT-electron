@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import InspectionPanel from '../components/InspectionPanel.vue';
 import {
   generateAnswerButtonList,
   generateResultListHeader,
@@ -37,6 +38,7 @@ export default {
     this.audioList = await generateAudioList(this.audioDirPath);
     this.resultList = generateResultList(this.audioList, this.columnNumber);
   },
+  components: { InspectionPanel },
 };
 </script>
 
