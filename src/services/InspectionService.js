@@ -61,9 +61,9 @@ export function generateAnswerButtonList(columnNumber) {
   }
   if (columnNumber === 3) {
     const buttonLabelDic = [
-      ' - 語頭',
-      ' - 語中',
-      ' - 語尾',
+      ' - 第一文節',
+      ' - 第二文節',
+      ' - 第三文節',
     ];
     return answerButtonList.map(answerButton => ({
       ...answerButton,
