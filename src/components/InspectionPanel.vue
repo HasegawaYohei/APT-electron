@@ -120,6 +120,11 @@ import {
 } from '../services/InspectionService';
 import { outputCsvForInspectionPanel } from '../services/FileService';
 
+function autoScroll() {
+  const { scrollHeight } = document.getElementsByClassName('active')[0];
+  document.getElementsByClassName('result-list')[0].scrollBy(0, scrollHeight);
+}
+
 export default {
   props: [
     'title',
@@ -165,6 +170,7 @@ export default {
 
       this.played = false;
       this.cursor = internalNext(this.resultList, this.cursor);
+      autoScroll();
     },
     async finish() {
       await outputCsvForInspectionPanel(this.title, this.resultListHeader, this.resultList);
